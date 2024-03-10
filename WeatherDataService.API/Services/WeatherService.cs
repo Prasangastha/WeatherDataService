@@ -34,7 +34,7 @@ namespace WeatherDataService.API.Services
 
             return new WeatherForecast
             {
-                description = weatherData?.weather?.FirstOrDefault()?.description ?? string.Empty
+                Description = weatherData?.Weather?.FirstOrDefault()?.Description ?? string.Empty
             };
 
         }
