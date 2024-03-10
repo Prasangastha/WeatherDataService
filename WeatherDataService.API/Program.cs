@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Configuration;
 using WeatherDataService.API.Configurations;
+using WeatherDataService.API.Middlewares;
 using WeatherDataService.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
+builder.Services.AddSingleton<IApiKeyService, ApiKeyService>();
 builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMap"));
+builder.Services.Configure<WeatherApiKeyOptions>(builder.Configuration.GetSection("WeatherForecastAPI"));
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
@@ -20,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRateLimitMiddleware();
 
 app.UseHttpsRedirection();
 
