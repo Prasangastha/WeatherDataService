@@ -26,10 +26,11 @@ This repository contains a simple Web API built with .NET 8 for fetching weather
 3. Build and run the application.
 4. Access the Swagger UI for testing the API endpoints.
 5. Authorize the request in Swagger UI by using any one of the five api keys available in `appsettings.json` file.
+6. Test the API using tools like Postman by sending GET request with the x-api-key header to `https://localhost:44365/weather?city=Melbourne&country=Australia`
 
 ### User Interface (index.html)
 
-The API can be alternatively tested through the UI. A simple HTML file (`index.html`) is provided in this project to interact with the Weather Data Service API. This UI allows users to input a city and country and fetch weather information using the backend API. The UI utilizes Tailwind CSS for styling and includes JavaScript for making API requests and displaying the weather data.
+The API can be alternatively tested through the UI. A simple HTML file (`index.html`) is provided in this project to interact with the Weather Data Service API. This UI allows users to input a city and country and fetch weather information using the backend API. The UI utilizes Tailwind CSS for styling and includes JavaScript for making API requests and displaying the weather data. For simplicity, the api key is already added in the headers when sending a request to the server.
 
 ### Testing
 
