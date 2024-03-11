@@ -1,4 +1,4 @@
-## Weather Data Service API
+## Weather Data Service API :sunny: :cloud: :umbrella:
 
 This repository contains a simple Web API built with .NET 8 for fetching weather data using the OpenWeatherMap API. The project consists of controllers, services, configurations, and middlewares to handle API requests, caching, rate limiting, and exception handling.
 
