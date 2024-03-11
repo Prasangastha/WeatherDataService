@@ -106,5 +106,22 @@ namespace WeatherDataService.Tests
 
             Assert.Equal($"City name must be provided.", ex.Message);
         }
+
+        [Fact]
+        public async Task GetWeatherAsync_LongCountryName_ReturnsBadRequest()
+        {
+            // Arrange
+            var city = "Melbourne";
+            var country = "AustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustraliaAustralia";
+            var weatherServiceMock = new Mock<IWeatherService>();
+            weatherServiceMock.Setup(service => service.GetWeatherAsync(city, country))
+                              .ThrowsAsync(new BadRequestException("Country and City must be less than 90 and 190 characters respectively."));
+            var controller = new WeatherForecastController(weatherServiceMock.Object);
+
+            // Act & Assert
+            var ex = await Assert.ThrowsAsync<BadRequestException>(async () => await controller.GetWeatherAsync(city, country));
+
+            Assert.Equal($"Country and City must be less than 90 and 190 characters respectively.", ex.Message);
+        }
     }
 }
