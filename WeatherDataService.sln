@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDataService.API", "WeatherDataService.API\WeatherDataService.API.csproj", "{7C82A0BB-BA36-40C0-9C78-0BB565AC6835}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDataService.API", "WeatherDataService.API\WeatherDataService.API.csproj", "{7C82A0BB-BA36-40C0-9C78-0BB565AC6835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDataService.Tests", "WeatherDataService.Tests\WeatherDataService.Tests.csproj", "{C7A1DD4D-4450-4A2A-AE6B-A5577F7CCC3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7C82A0BB-BA36-40C0-9C78-0BB565AC6835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C82A0BB-BA36-40C0-9C78-0BB565AC6835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C82A0BB-BA36-40C0-9C78-0BB565AC6835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7A1DD4D-4450-4A2A-AE6B-A5577F7CCC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7A1DD4D-4450-4A2A-AE6B-A5577F7CCC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7A1DD4D-4450-4A2A-AE6B-A5577F7CCC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7A1DD4D-4450-4A2A-AE6B-A5577F7CCC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
