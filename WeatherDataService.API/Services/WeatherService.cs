@@ -14,12 +14,14 @@ namespace WeatherDataService.API.Services
         private readonly HttpClient _httpclient;
         private readonly OpenWeatherMapOptions _options;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<WeatherService> _logger;
 
-        public WeatherService(HttpClient httpClient, IOptions<OpenWeatherMapOptions> options, IMemoryCache cache)
+        public WeatherService(HttpClient httpClient, IOptions<OpenWeatherMapOptions> options, IMemoryCache cache, ILogger<WeatherService> logger)
         {
             _httpclient = httpClient;
             _options = options.Value;
             _cache = cache;
+            _logger = logger;
         }
 
         public async Task<WeatherForecast> GetWeatherAsync(string city, string country)
@@ -35,6 +37,7 @@ namespace WeatherDataService.API.Services
 
             string? apiKey = _options.ApiKeys.FirstOrDefault();
             string url = $"{_options.BaseUrl}/data/2.5/weather?q={city},{country}&appid={apiKey}";
+            _logger.LogInformation($"Fetching weather data for {city}, {country}");
 
             try
             {
@@ -52,8 +55,9 @@ namespace WeatherDataService.API.Services
 
                 return weatherForecast;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError($"Error occurred while fetching weather data for {city}, {country} : {ex.Message}");
                 throw new NotFoundException(country, city);
             }
 

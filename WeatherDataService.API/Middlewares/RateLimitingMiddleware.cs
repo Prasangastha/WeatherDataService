@@ -9,11 +9,13 @@ namespace WeatherDataService.API.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IApiKeyService _apiKeyService;
+        private readonly ILogger<RateLimitingMiddleware> _logger;
 
-        public RateLimitingMiddleware(RequestDelegate next, IApiKeyService apiKeyService)
+        public RateLimitingMiddleware(RequestDelegate next, IApiKeyService apiKeyService, ILogger<RateLimitingMiddleware> logger)
         {
             _next = next;
             _apiKeyService = apiKeyService;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -22,6 +24,7 @@ namespace WeatherDataService.API.Middlewares
             {
                 if (apiKeyValues.Count == 0)
                 {
+                    _logger.LogError("API key is missing");
                     throw new BadRequestException("API key is missing");
                 }
             }
@@ -30,11 +33,13 @@ namespace WeatherDataService.API.Middlewares
 
             if (!_apiKeyService.IsValidApiKey(apiKey))
             {
+                _logger.LogError("Invalid API key");
                 throw new UnAuthorizedException();
             }
 
             if (_apiKeyService.IsRateLimited(apiKey))
             {
+                _logger.LogError("Rate limit exceeded");
                 throw new MaximumRateLimitException();
             }
 
