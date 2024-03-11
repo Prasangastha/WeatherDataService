@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
+using WeatherDataService.API.Exceptions;
 using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Middlewares
@@ -16,30 +18,24 @@ namespace WeatherDataService.API.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Headers.TryGetValue("X-API-Key", out var apiKeyValues))
+            if (!context.Request.Headers.TryGetValue("X-API-Key", out StringValues apiKeyValues))
             {
                 if (apiKeyValues.Count == 0)
                 {
-                    context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync("API key is missing");
-                    return;
+                    throw new BadRequestException("API key is missing");
                 }
             }
 
-            var apiKey = apiKeyValues.FirstOrDefault();
+            string? apiKey = apiKeyValues.FirstOrDefault();
 
-            if (string.IsNullOrEmpty(apiKey) || !_apiKeyService.IsValidApiKey(apiKey))
+            if (!_apiKeyService.IsValidApiKey(apiKey))
             {
-                context.Response.StatusCode = 401;
-                await context.Response.WriteAsync("Invalid API key");
-                return; 
+                throw new UnAuthorizedException();
             }
 
             if (_apiKeyService.IsRateLimited(apiKey))
             {
-                context.Response.StatusCode = 429;
-                await context.Response.WriteAsync("Hourly rate limit exceeded for API key.");
-                return; 
+                throw new MaximumRateLimitException();
             }
 
             _apiKeyService.IncreaseRequestCount(apiKey);

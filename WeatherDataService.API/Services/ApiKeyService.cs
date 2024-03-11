@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WeatherDataService.API.Configurations;
+using WeatherDataService.API.Exceptions;
 using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Services
@@ -20,7 +21,7 @@ namespace WeatherDataService.API.Services
         {
             if(apiKey == null)
             {
-                return false;
+                throw new BadRequestException("API key is missing");
             }
 
             return _apiKeys.Contains(apiKey);
