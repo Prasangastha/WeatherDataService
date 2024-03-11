@@ -24,7 +24,7 @@ namespace WeatherDataService.Tests
             // Arrange
             var city = "Melbourne";
             var country = "Australia";
-            var expectedWeather = new WeatherForecast { Description = "Cloudy" };
+            var expectedWeather = new WeatherForecastDto { Description = "Cloudy" };
 
             var weatherServiceMock = new Mock<IWeatherService>();
             weatherServiceMock.Setup(service => service.GetWeatherAsync(city, country)).ReturnsAsync(expectedWeather);
@@ -35,7 +35,7 @@ namespace WeatherDataService.Tests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var weather = Assert.IsAssignableFrom<WeatherForecast>(okResult.Value);
+            var weather = Assert.IsAssignableFrom<WeatherForecastDto>(okResult.Value);
             Assert.Equal(expectedWeather.Description, weather.Description);
         }
 

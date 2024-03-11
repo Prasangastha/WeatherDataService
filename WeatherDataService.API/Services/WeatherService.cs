@@ -24,11 +24,11 @@ namespace WeatherDataService.API.Services
             _logger = logger;
         }
 
-        public async Task<WeatherForecast> GetWeatherAsync(string city, string country)
+        public async Task<WeatherForecastDto> GetWeatherAsync(string city, string country)
         {
             ValidateInput(city, country);
 
-            WeatherForecast weatherForecast = GetWeatherForecastFromCache(city, country);
+            WeatherForecastDto weatherForecast = GetWeatherForecastFromCache(city, country);
 
             if (!string.IsNullOrEmpty(weatherForecast.Description))
             {
@@ -69,21 +69,21 @@ namespace WeatherDataService.API.Services
 
         }
 
-        public WeatherForecast GetWeatherForecastFromCache(string city, string country)
+        public WeatherForecastDto GetWeatherForecastFromCache(string city, string country)
         {
-            if (_cache.TryGetValue($"{city}-{country}", out WeatherForecast? weatherForecast))
+            if (_cache.TryGetValue($"{city}-{country}", out WeatherForecastDto? weatherForecast))
             {
                 _logger.LogInformation($"Fetching weather data for {city}, {country} from cache");
-                return weatherForecast ?? new WeatherForecast();
+                return weatherForecast ?? new WeatherForecastDto();
             }
 
-            return new WeatherForecast();
+            return new WeatherForecastDto();
         }
 
         public void SetWeatherForecastInCache(string city, string country, string description)
         {
             _logger.LogInformation($"Setting weather data for {city}, {country} in cache");
-            _cache.Set($"{city}-{country}", new WeatherForecast
+            _cache.Set($"{city}-{country}", new WeatherForecastDto
             {
                 Description = description
             }, TimeSpan.FromMinutes(_options.CacheDurationMinutes));

@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using WeatherDataService.API.Interfaces;
+using WeatherDataService.API.Models;
 
 namespace WeatherDataService.API.Controllers
 {
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("/weather")]
     public class WeatherForecastController : ControllerBase
     {
 
@@ -16,7 +17,10 @@ namespace WeatherDataService.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WeatherForecastDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status429TooManyRequests)]
         public async Task<IActionResult> GetWeatherAsync(string city = "", string country = "")
         {
             var weather = await _weatherService.GetWeatherAsync(city, country);

@@ -1,6 +1,5 @@
 using WeatherDataService.API.Configurations;
 using WeatherDataService.API.Services;
-using Microsoft.OpenApi.Models;
 using WeatherDataService.API.Interfaces;
 using WeatherDataService.API.Extensions;
 
@@ -17,42 +16,18 @@ builder.Services.Configure<WeatherApiKeyOptions>(builder.Configuration.GetSectio
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme()
-    {
-        Name = "X-API-KEY",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Description = "Authorization by x-api-key inside request's header",
-        Scheme = "ApiKeyScheme"
-    });
-
-    var key = new OpenApiSecurityScheme()
-    {
-        Reference = new OpenApiReference
-        {
-            Type = ReferenceType.SecurityScheme,
-            Id = "ApiKey"
-        },
-        In = ParameterLocation.Header
-    };
-    var requirement = new OpenApiSecurityRequirement
-    {
-       { key, new List<string>() }
-    };
-    c.AddSecurityRequirement(requirement);
-});
+// Use the custom extension method to add SwaggerGen configuration
+builder.Services.AddCustomSwaggerGen(); 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// For testing purposes, this is not a good practice to allow any origin, method and header
 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseExceptionHandlerMiddleware();

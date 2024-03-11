@@ -4,6 +4,6 @@ namespace WeatherDataService.API.Interfaces
 {
     public interface IWeatherService
     {
-        Task<WeatherForecast> GetWeatherAsync(string city, string country);
+        Task<WeatherForecastDto> GetWeatherAsync(string city, string country);
     }
 }
