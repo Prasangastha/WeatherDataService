@@ -11,8 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 builder.Services.AddSingleton<IApiKeyService, ApiKeyService>();
-builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMap"));
+
+builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMapAPI"));
 builder.Services.Configure<WeatherApiKeyOptions>(builder.Configuration.GetSection("WeatherForecastAPI"));
+
 builder.Services.AddMemoryCache();
 
 builder.Services.AddSwaggerGen(c =>

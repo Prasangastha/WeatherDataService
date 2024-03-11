@@ -18,7 +18,7 @@ namespace WeatherDataService.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetWeatherAsync(string city, string country)
+        public async Task<IActionResult> GetWeatherAsync(string city = "", string country = "")
         {
             var weather = await _weatherService.GetWeatherAsync(city, country);
             return Ok(weather);

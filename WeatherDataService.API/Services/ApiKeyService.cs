@@ -9,11 +9,13 @@ namespace WeatherDataService.API.Services
     public class ApiKeyService : IApiKeyService
     {
         private readonly List<string> _apiKeys;
+        private readonly int _rateLimit;
         private readonly IMemoryCache _cache;
 
         public ApiKeyService(IOptions<WeatherApiKeyOptions> options, IMemoryCache cache)
         {
             _apiKeys = options.Value.ApiKeys;
+            _rateLimit = options.Value.RateLimit;
             _cache = cache;
         }
 
@@ -29,18 +31,18 @@ namespace WeatherDataService.API.Services
 
         public bool IsRateLimited(string? apiKey)
         {
-            var cacheKey = $"RateLimit-{apiKey}-{DateTime.UtcNow:yyyy-MM-dd-HH}";
+            var cacheKey = GetCacheKey();
 
             if (!_cache.TryGetValue(cacheKey, out int requestCount))
             {
                 requestCount = 0;
             }
 
-            return requestCount >= 5;
+            return requestCount >= _rateLimit;
         }
         public void IncreaseRequestCount(string? apiKey)
         {
-            var cacheKey = $"RateLimit-{apiKey}-{DateTime.UtcNow:yyyy-MM-dd-HH}";
+            var cacheKey = GetCacheKey();
 
             if (!_cache.TryGetValue(cacheKey, out int requestCount))
             {
@@ -50,6 +52,8 @@ namespace WeatherDataService.API.Services
             requestCount++;
             _cache.Set(cacheKey, requestCount, TimeSpan.FromHours(1));
         }
+
+        private static string GetCacheKey() => $"RateLimit-{DateTime.UtcNow:yyyy-MM-dd-HH}";
  
     }
 }
