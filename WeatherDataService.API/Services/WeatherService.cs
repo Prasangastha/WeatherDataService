@@ -49,6 +49,12 @@ namespace WeatherDataService.API.Services
                 WeatherDataResponse? weatherData = JsonSerializer.Deserialize<WeatherDataResponse>(content);
                 string weatherDescription = weatherData?.Weather?.FirstOrDefault()?.Description ?? string.Empty;
 
+                if (string.IsNullOrEmpty(weatherDescription))
+                {
+                    _logger.LogError($"Weather data for {city}, {country} is empty");
+                    throw new NotFoundException(country, city);
+                }
+
                 SetWeatherForecastInCache(city, country, weatherDescription);
 
                 weatherForecast.Description = weatherDescription;
@@ -58,7 +64,7 @@ namespace WeatherDataService.API.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Error occurred while fetching weather data for {city}, {country} : {ex.Message}");
-                throw new NotFoundException(country, city);
+                throw new BadRequestException("Failed to fetch the description for the weather from OpenWeatherMap");
             }
 
         }
@@ -67,6 +73,7 @@ namespace WeatherDataService.API.Services
         {
             if (_cache.TryGetValue($"{city}-{country}", out WeatherForecast? weatherForecast))
             {
+                _logger.LogInformation($"Fetching weather data for {city}, {country} from cache");
                 return weatherForecast ?? new WeatherForecast();
             }
 
@@ -75,6 +82,7 @@ namespace WeatherDataService.API.Services
 
         public void SetWeatherForecastInCache(string city, string country, string description)
         {
+            _logger.LogInformation($"Setting weather data for {city}, {country} in cache");
             _cache.Set($"{city}-{country}", new WeatherForecast
             {
                 Description = description

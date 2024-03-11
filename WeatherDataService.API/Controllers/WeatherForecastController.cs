@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Controllers
@@ -9,15 +10,13 @@ namespace WeatherDataService.API.Controllers
     {
 
         private readonly IWeatherService _weatherService;
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(IWeatherService weatherService, ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IWeatherService weatherService)
         {
             _weatherService = weatherService;
-            _logger = logger;
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWeatherAsync(string city = "", string country = "")
         {
             var weather = await _weatherService.GetWeatherAsync(city, country);
