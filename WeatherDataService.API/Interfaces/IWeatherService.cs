@@ -1,6 +1,6 @@
 ﻿using WeatherDataService.API.Models;
 
-namespace WeatherDataService.API.Services
+namespace WeatherDataService.API.Interfaces
 {
     public interface IWeatherService
     {

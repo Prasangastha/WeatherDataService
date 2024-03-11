@@ -1,5 +1,4 @@
-﻿//add namespace for this folder
-namespace WeatherDataService.API.Configurations
+﻿namespace WeatherDataService.API.Configurations
 {
     public class OpenWeatherMapOptions
     {

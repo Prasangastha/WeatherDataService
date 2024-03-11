@@ -1,8 +1,8 @@
 ﻿
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using WeatherDataService.API.Configurations;
+using WeatherDataService.API.Interfaces;
 using WeatherDataService.API.Models;
 
 namespace WeatherDataService.API.Services

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherDataService.API.Services;
+using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Controllers
 {

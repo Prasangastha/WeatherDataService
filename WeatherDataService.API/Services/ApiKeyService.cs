@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WeatherDataService.API.Configurations;
+using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Services
 {

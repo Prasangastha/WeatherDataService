@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using WeatherDataService.API.Services;
+using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Middlewares
 {

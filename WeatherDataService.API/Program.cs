@@ -1,12 +1,10 @@
 using WeatherDataService.API.Configurations;
-using WeatherDataService.API.Middlewares;
 using WeatherDataService.API.Services;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
+using WeatherDataService.API.Interfaces;
+using WeatherDataService.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -51,9 +49,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // Swashbuckle configuration
-   
 }
 
 app.UseRateLimitMiddleware();

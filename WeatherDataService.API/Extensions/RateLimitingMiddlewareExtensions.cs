@@ -1,4 +1,6 @@
-﻿namespace WeatherDataService.API.Middlewares
+﻿using WeatherDataService.API.Middlewares;
+
+namespace WeatherDataService.API.Extensions
 {
     public static class RateLimitMiddlewareExtensions
     {
