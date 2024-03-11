@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using WeatherDataService.API.Interfaces;
 
 namespace WeatherDataService.API.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
