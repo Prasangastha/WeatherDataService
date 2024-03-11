@@ -53,7 +53,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExcetionHandlerMiddleware();
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+app.UseExceptionHandlerMiddleware();
 
 app.UseRateLimitMiddleware();
 

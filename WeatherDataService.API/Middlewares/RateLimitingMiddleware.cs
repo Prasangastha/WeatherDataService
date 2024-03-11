@@ -20,7 +20,7 @@ namespace WeatherDataService.API.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (!context.Request.Headers.TryGetValue("X-API-Key", out StringValues apiKeyValues))
+            if (!context.Request.Headers.TryGetValue("x-api-key", out StringValues apiKeyValues))
             {
                 if (apiKeyValues.Count == 0)
                 {

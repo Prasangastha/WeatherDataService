@@ -64,7 +64,7 @@ namespace WeatherDataService.API.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Error occurred while fetching weather data for {city}, {country} : {ex.Message}");
-                throw new BadRequestException("Failed to fetch the description for the weather from OpenWeatherMap");
+                throw new BadRequestException($"Failed to fetch the description for {city}, {country} from OpenWeatherMap");
             }
 
         }
