@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using WeatherDataService.API.Configurations;
@@ -12,35 +13,68 @@ namespace WeatherDataService.API.Services
     {
         private readonly HttpClient _httpclient;
         private readonly OpenWeatherMapOptions _options;
+        private readonly IMemoryCache _cache;
 
-        public WeatherService(HttpClient httpClient, IOptions<OpenWeatherMapOptions> options)
+        public WeatherService(HttpClient httpClient, IOptions<OpenWeatherMapOptions> options, IMemoryCache cache)
         {
             _httpclient = httpClient;
             _options = options.Value;
+            _cache = cache;
         }
 
         public async Task<WeatherForecast> GetWeatherAsync(string city, string country)
         {
-            
-            ValidateInput(city, country);   
+            ValidateInput(city, country);
 
-            var apiKey = _options.ApiKeys.FirstOrDefault();
-            var url = $"{_options.BaseUrl}/data/2.5/weather?q={city},{country}&appid={apiKey}";
-            var response = await _httpclient.GetAsync(url);
+            WeatherForecast weatherForecast = GetWeatherForecastFromCache(city, country);
 
-            if (!response.IsSuccessStatusCode)
+            if (!string.IsNullOrEmpty(weatherForecast.Description))
+            {
+                return weatherForecast;
+            }
+
+            string? apiKey = _options.ApiKeys.FirstOrDefault();
+            string url = $"{_options.BaseUrl}/data/2.5/weather?q={city},{country}&appid={apiKey}";
+
+            try
+            {
+                HttpResponseMessage response = await _httpclient.GetAsync(url);
+
+                response.EnsureSuccessStatusCode();
+
+                string content = await response.Content.ReadAsStringAsync();
+                WeatherDataResponse? weatherData = JsonSerializer.Deserialize<WeatherDataResponse>(content);
+                string weatherDescription = weatherData?.Weather?.FirstOrDefault()?.Description ?? string.Empty;
+
+                SetWeatherForecastInCache(city, country, weatherDescription);
+
+                weatherForecast.Description = weatherDescription;
+
+                return weatherForecast;
+            }
+            catch (Exception)
             {
                 throw new NotFoundException(country, city);
             }
 
-            var content = await response.Content.ReadAsStringAsync();
-            var weatherData = JsonSerializer.Deserialize<WeatherDataResponse>(content);
+        }
 
-            return new WeatherForecast
+        public WeatherForecast GetWeatherForecastFromCache(string city, string country)
+        {
+            if (_cache.TryGetValue($"{city}-{country}", out WeatherForecast? weatherForecast))
             {
-                Description = weatherData?.Weather?.FirstOrDefault()?.Description ?? string.Empty
-            };
+                return weatherForecast ?? new WeatherForecast();
+            }
 
+            return new WeatherForecast();
+        }
+
+        public void SetWeatherForecastInCache(string city, string country, string description)
+        {
+            _cache.Set($"{city}-{country}", new WeatherForecast
+            {
+                Description = description
+            }, TimeSpan.FromMinutes(_options.CacheDurationMinutes));
         }
 
         public void ValidateInput(string city, string country)
