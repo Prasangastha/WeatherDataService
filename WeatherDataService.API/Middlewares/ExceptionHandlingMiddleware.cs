@@ -46,6 +46,10 @@ namespace WeatherDataService.API.Middlewares
                     httpStatusCode = HttpStatusCode.TooManyRequests;
                     result = JsonSerializer.Serialize(new { error = maximumRateLimitException.Message });
                     break;
+                case NotFoundException notFoundException:
+                    httpStatusCode = HttpStatusCode.NotFound;
+                    result = JsonSerializer.Serialize(new { error = notFoundException.Message });
+                    break;
                 case Exception:
                     httpStatusCode = HttpStatusCode.BadRequest;
                     break;

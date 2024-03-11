@@ -9,7 +9,7 @@ namespace WeatherDataService.API.Extensions
             return builder.UseMiddleware<RateLimitingMiddleware>();
         }
 
-        public static IApplicationBuilder UseExcetionHandlerMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseExceptionHandlerMiddleware(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<ExceptionHandlingMiddleware>();
         }
