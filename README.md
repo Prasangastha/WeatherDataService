@@ -44,3 +44,19 @@ Unit tests for the API can be found in the WeatherDataService.Tests project. The
 - The response from OpenWeatherMap is cached in memory for 15 minutes according to `CacheMinutes` (can be configured in `appsettings.json`)  for performance.
 
 Enjoy testing! 🚀
+
+### API Flow Chart
+
+The high-level logic for this application has been mapped out in the flow chart below visualizing how the information is flowing through the API and finding opportunities to optimize.
+
+![image](https://github.com/Prasangastha/WeatherDataService/assets/30475167/f5afc308-bb4e-467d-acb1-56800940a612)
+
+
+### API Sequence UML Diagram
+
+A UML sequence diagram visually charts how different parts of your system interact with the API. It shows the exact order of requests and the responses sent back and forth over time. This diagram outlines who's involved (your application, the weather API, the end-user) and covers both successful scenarios and how your system gracefully handles errors that might come from the weather API.
+
+![image](https://github.com/Prasangastha/WeatherDataService/assets/30475167/c3e2670c-ae3e-428a-9173-d36040b69e08)
+
+
+
