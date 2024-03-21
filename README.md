@@ -56,7 +56,9 @@ The high-level logic for this application has been mapped out in the flow chart 
 
 A UML sequence diagram visually charts how different parts of your system interact with the API. It shows the exact order of requests and the responses sent back and forth over time. This diagram outlines who's involved (your application, the weather API, the end-user) and covers both successful scenarios and how your system gracefully handles errors that might come from the weather API.
 
-![image](https://github.com/Prasangastha/WeatherDataService/assets/30475167/c3e2670c-ae3e-428a-9173-d36040b69e08)
+![image](https://github.com/Prasangastha/WeatherDataService/assets/30475167/90525fad-abde-47c9-8738-0fab931539fd)
+
+
 
 
 
